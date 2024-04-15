@@ -1,0 +1,36 @@
+version: '3'
+
+services:
+  backend:
+    build: ./backend
+    ports:
+      - 4000:3001
+    volumes:
+      - ./backend/src:/app/src:rw
+      - ./backend/jest.config.js:/app/jest.config.js
+      - ./backend/package.json:/app/package.json
+
+  frontend:
+    build: ./frontend
+    command: npm run dev
+    volumes:
+      - ./frontend/src:/app/src:rw
+    ports:
+      - 3000:3000
+
+  db:
+    image: postgres
+    environment:
+      POSTGRES_USER: Checkpoint2
+      POSTGRES_PASSWORD: Checkpoint2
+      POSTGRES_DB: Checkpoint2Db
+      PGDATA: customDataFolder
+    volumes:
+      - ./dbData:/var/lib/postgresql/data/customDataFolder
+    ports:
+      - 6543:6543
+
+  adminer:
+    image: adminer
+    ports:
+      - 8080:8080
